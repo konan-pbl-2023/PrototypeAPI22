@@ -29,10 +29,8 @@ class SnakeGameHolderCallBack implements SurfaceHolder.Callback, Runnable {
     private Thread thread = null;
     private boolean isAttacked = true;
 
-    private final long waitTime = 16;
-
     @Override
-    public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
+    public void surfaceCreated(@NonNull SurfaceHolder holder) {
         this.holder = holder;
         thread = new Thread(this);
         thread.start();
@@ -59,16 +57,17 @@ class SnakeGameHolderCallBack implements SurfaceHolder.Callback, Runnable {
     @Override
     public void run() {
         while (isAttacked) {
-            long timerStart = System.currentTimeMillis();
+            final long timerStart = System.currentTimeMillis();
             Canvas canvas = holder.lockCanvas();
 
             main_loop(canvas);
 
             holder.unlockCanvasAndPost(canvas);
-            long timerEnd = System.currentTimeMillis();
-            if ((timerEnd - timerStart) < waitTime) {
+            final long timerEnd = System.currentTimeMillis();
+            final long WAIT_TIME = 16;
+            if ((timerEnd - timerStart) < WAIT_TIME) {
                 try {
-                    Thread.sleep(waitTime - (timerEnd - timerStart));
+                    Thread.sleep(WAIT_TIME - (timerEnd - timerStart));
                 } catch (InterruptedException e) {}
             }
         }
