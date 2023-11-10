@@ -76,12 +76,10 @@ class SnakeGameHolderCallBack implements SurfaceHolder.Callback, Runnable {
 }
 
 class SnakeGameSurfaceView extends SurfaceView {
-    private SnakeGameHolderCallBack callback;
-
     public SnakeGameSurfaceView(Context context) {
         super(context);
         SurfaceHolder holder = getHolder();
-        callback = new SnakeGameHolderCallBack();
+        SnakeGameHolderCallBack callback = new SnakeGameHolderCallBack();
         holder.addCallback(callback);
     }
 }
