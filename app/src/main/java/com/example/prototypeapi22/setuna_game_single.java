@@ -10,5 +10,6 @@ public class setuna_game_single extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setuna_game_single);
+
     }
 }
