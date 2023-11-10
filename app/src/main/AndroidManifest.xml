@@ -13,6 +13,9 @@
         android:theme="@style/Theme.PrototypeAPI22"
         tools:targetApi="34">
         <activity
+            android:name=".setuna_game_single"
+            android:exported="false" />
+        <activity
             android:name=".setuna_result"
             android:exported="false" />
         <activity
