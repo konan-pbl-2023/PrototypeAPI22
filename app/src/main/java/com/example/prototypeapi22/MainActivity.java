@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         Button snakeButton = (findViewById(R.id.SnakeButton));
         snakeButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Intent snakeGame = new Intent(MainActivity.this,Snake_game.class);
+                Intent snakeGame = new Intent(MainActivity.this,snake_game.class);
                 startActivity(snakeGame);
             }
         });
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         Button numberButton = (findViewById(R.id.NumberButton));
         numberButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Intent numberGame = new Intent(MainActivity.this,Speed_press.class);
+                Intent numberGame = new Intent(MainActivity.this,speed_button.class);
                 startActivity(numberGame);
             }
         });
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         Button setunaButton = (findViewById(R.id.SetunaButton));
         setunaButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Intent setunaGame = new Intent(MainActivity.this,Setuna_game.class);
+                Intent setunaGame = new Intent(MainActivity.this,setuna_game.class);
                 startActivity(setunaGame);
             }
         });
