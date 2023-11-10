@@ -13,6 +13,12 @@
         android:theme="@style/Theme.PrototypeAPI22"
         tools:targetApi="34">
         <activity
+            android:name=".setuna_result"
+            android:exported="false" />
+        <activity
+            android:name=".setuna_title"
+            android:exported="false" />
+        <activity
             android:name=".speed_button"
             android:exported="false" />
         <activity
@@ -30,7 +36,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
