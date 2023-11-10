@@ -54,6 +54,7 @@
         app:layout_constraintVertical_bias="0.504" />
 
     <ImageView
+        android:id="@+id/reactionMark"
         android:layout_width="142dp"
         android:layout_height="113dp"
         app:layout_constraintBottom_toBottomOf="parent"

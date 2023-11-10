@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         Button setunaButton = (findViewById(R.id.SetunaButton));
         setunaButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Intent setunaGame = new Intent(MainActivity.this,setuna_game.class);
+                Intent setunaGame = new Intent(MainActivity.this,setuna_title.class);
                 startActivity(setunaGame);
             }
         });
