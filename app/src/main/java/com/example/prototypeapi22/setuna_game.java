@@ -60,6 +60,7 @@ public class setuna_game extends AppCompatActivity {
             reactionRun = false;
 
 
+
         }
 
     }
