@@ -13,9 +13,12 @@ public class KanjiTable {
     int min=0;
     int max=1628;
     int length=10;
+    String[] kaitoTable;
+    int nowIndex=0;
+
 
     KanjiTable(){
-        // 漢字データを格納しておくもの（グローバル変数にしたい）
+        // 漢字データを格納しておくもの
         ArrayList<String[]> kanjiList = new ArrayList<String[]>();
         BufferedReader buffReader = null;
 
@@ -24,21 +27,25 @@ public class KanjiTable {
         setNum(min, max, length);
 
         try {
-            FileInputStream fileInput = new FileInputStream("pre1_reading.csv");	// ファイル読み込み
-            InputStreamReader inputStream = new InputStreamReader(fileInput);
-            buffReader = new BufferedReader(inputStream);
+            FileInputStream filekaito = new FileInputStream("pre1_reading.csv");	// ファイル読み込み
+            InputStreamReader InputStream = new InputStreamReader(filekaito);
+            buffReader = new BufferedReader(InputStream);
 
             String currentContent;
             int row = 0;
-            //String[] arrayColumnName = null;
+            /*
+             * String[] arrayColumnName = null;
+             */
 
             while((currentContent = buffReader.readLine()) != null) {
 
                 if(row == 0) {
                     // ラベル
-                    //arrayColumnName = currentContent.split(",");
-                    //for(String columnName : arrayColumnName) System.out.print(columnName + " ");
-                    //System.out.println();
+                    /*
+                     * arrayColumnName = currentContent.split(",");
+                     * for(String columnName : arrayColumnName) System.out.print(columnName + " ");
+                     * System.out.println();
+                     */
 
                 } else {
                     // 一行分のデータ
@@ -63,33 +70,6 @@ public class KanjiTable {
         }
     }
 
-	/*
-	void print(int index) {
-		// データを取り出す例
-        System.out.println("データの大きさ：" + kanjiTable.length + "x" + kanjiTable[0].length);
-        int r = index;
-        	for(int c=0; c<kanjiTable[0].length; c++) {
-        		System.out.print(kanjiTable[r][c] + " ");
-        	}
-        	System.out.println();
-
-	}
-
-
-	void print(int min, int max) {
-		// データを取り出す例
-        System.out.println("データの大きさ：" + kanjiTable.length + "x" + kanjiTable[0].length);
-        for(int r=min; r<kanjiTable.length; r++) {
-        	for(int c=0; c<kanjiTable[0].length; c++) {
-        		System.out.print(kanjiTable[r][c] + " ");
-        	}
-        	System.out.println();
-
-        	if(r>=max-1) break;// 長いので中断
-        }
-	}
-	*/
-
 
     void setNum(int min, int max, int length) {
         this.min=min;
@@ -105,19 +85,27 @@ public class KanjiTable {
 
     void reload() {
         Collections.shuffle(arr);
+        kaitoTable = new String[length];
+        nowIndex=0;
     }
 
-    boolean equal(int index, String inputStr) {
-        if(getYomi(index).equals(inputStr)) return true;
-        else if(getYomi(index).equals(inputStr+getOkuri(index))) return true;
+
+    boolean check() {
+        if(getYomi(nowIndex).equals(kaitoTable[nowIndex])) return true;
+        else if(getYomi(nowIndex).equals(kaitoTable[nowIndex]+getOkuri(nowIndex))) return true;
+        else return false;
+    }
+    boolean check(int index) {
+        if(getYomi(index).equals(kaitoTable[index])) return true;
+        else if(getYomi(index).equals(kaitoTable[index]+getOkuri(index))) return true;
+        else return false;
+    }
+    boolean check(int index, String kaitoStr) {
+        if(getYomi(index).equals(kaitoStr)) return true;
+        else if(getYomi(index).equals(kaitoStr+getOkuri(index))) return true;
         else return false;
     }
 
-	/*
-	String get(int r, int c) {
-		return kanjiTable[r][c];
-	}
-	*/
 
     /*
      * 0	1		2	3		4			5							6		7			8		9
@@ -132,41 +120,102 @@ public class KanjiTable {
      */
 
 
+    void setIndex(int index) {
+        nowIndex = index;
+    }
+
+
+    int getIndex() {
+        return nowIndex;
+    }
+
+
+    void nextIndex() {
+        nowIndex++;
+    }
+
+
+    int getLength() {
+        return length;
+    }
+
+
+    void setKaito(String kaito) {
+        kaitoTable[nowIndex] = kaito;
+    }
+    void setKaito(int index, String kaito) {
+        kaitoTable[index] = kaito;
+    }
+
+
+    String getKaito() {
+        return kaitoTable[nowIndex];
+    }
+    String getKaito(int index) {
+        return kaitoTable[index];
+    }
+
+
+    String getNo() {
+        return kanjiTable[arr.get(nowIndex)][0];
+    }
     String getNo(int index) {
         return kanjiTable[arr.get(index)][0];
     }
 
 
+    String getWord() {
+        return kanjiTable[arr.get(nowIndex)][3];
+    }
     String getWord(int index) {
         return kanjiTable[arr.get(index)][3];
     }
 
 
+    String getYomi() {
+        return kanjiTable[arr.get(nowIndex)][4];
+    }
     String getYomi(int index) {
         return kanjiTable[arr.get(index)][4];
     }
 
 
+    String getBun() {
+        return kanjiTable[arr.get(nowIndex)][5];
+    }
     String getBun(int index) {
         return kanjiTable[arr.get(index)][5];
     }
 
 
+    String getKanji() {
+        return kanjiTable[arr.get(nowIndex)][6];
+    }
     String getKanji(int index) {
         return kanjiTable[arr.get(index)][6];
     }
 
 
+    String getHira() {
+        return kanjiTable[arr.get(nowIndex)][7];
+    }
     String getHira(int index) {
         return kanjiTable[arr.get(index)][7];
     }
 
 
+    String getOkuri() {
+        String res;
+        res=kanjiTable[arr.get(nowIndex)][9];
+        if(res.equals("X")) return "";
+        else return res;
+    }
     String getOkuri(int index) {
         String res;
         res=kanjiTable[arr.get(index)][9];
         if(res.equals("X")) return "";
         else return res;
     }
-}
 
+
+}
