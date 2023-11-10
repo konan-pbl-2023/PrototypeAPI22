@@ -30,6 +30,19 @@ class SnakeGameHolderCallBack implements SurfaceHolder.Callback, Runnable {
     private Thread thread = null;
     private boolean isAttacked = true;
 
+    private final float screenWidth;
+    private final float screenHeight;
+
+    private final float CANVAS_WIDTH = 600;
+    private final float CANVAS_HEIGHT = 600;
+
+    public SnakeGameHolderCallBack(float width, float height) {
+        super();
+        screenWidth = width;
+        screenHeight = height;
+
+    }
+
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
         this.holder = holder;
@@ -59,7 +72,18 @@ class SnakeGameHolderCallBack implements SurfaceHolder.Callback, Runnable {
     public void run() {
         while (isAttacked) {
             final long timerStart = System.currentTimeMillis();
+
+            final float scaleX = screenWidth / CANVAS_WIDTH;
+            final float scaleY = screenHeight / CANVAS_HEIGHT;
+            final float scale = scaleX > scaleY ? scaleY : scaleX;
+
             Canvas canvas = holder.lockCanvas();
+
+            canvas.translate(
+                    (screenWidth - CANVAS_WIDTH)/2*scale,
+                    (screenHeight - CANVAS_HEIGHT)/2*scale
+            );
+            canvas.scale(scale, scale);
 
             main_loop(canvas);
 
@@ -78,8 +102,10 @@ class SnakeGameHolderCallBack implements SurfaceHolder.Callback, Runnable {
 class SnakeGameSurfaceView extends SurfaceView {
     public SnakeGameSurfaceView(Context context) {
         super(context);
+        final float width = getWidth();
+        final float height = getHeight();
         SurfaceHolder holder = getHolder();
-        SnakeGameHolderCallBack callback = new SnakeGameHolderCallBack();
+        SnakeGameHolderCallBack callback = new SnakeGameHolderCallBack(width, height);
         holder.addCallback(callback);
     }
 }
