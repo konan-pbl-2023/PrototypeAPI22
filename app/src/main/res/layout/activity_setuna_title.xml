@@ -6,4 +6,44 @@
     android:layout_height="match_parent"
     tools:context=".setuna_title">
 
+    <TextView
+        android:id="@+id/gametitle1"
+        android:layout_width="301dp"
+        android:layout_height="74dp"
+        android:text="刹那の見斬り"
+        android:textAlignment="center"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.246" />
+
+    <Button
+        android:id="@+id/singleButton"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="166dp"
+        android:layout_height="73dp"
+        android:text="1人play"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.215"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.659" />
+
+    <Button
+        android:id="@+id/multiButton"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="166dp"
+        android:layout_height="73dp"
+        android:text="2人play"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.823"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.659" />
 </androidx.constraintlayout.widget.ConstraintLayout>
