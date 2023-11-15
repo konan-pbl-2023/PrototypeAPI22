@@ -3,9 +3,11 @@ package com.example.prototypeapi22;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.Random;
 
@@ -16,52 +18,105 @@ public class setuna_game extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setuna_game);
 
-        //変数宣言
-        boolean stopRun = false;//ビックリマーク表示まで
-        boolean reactionRun = false;//ビックリマーク表示後
-        long timer;//タイマー
-        long startTime = System.currentTimeMillis();
-        long reactionStartTime;
         ImageView reactionMark = findViewById(R.id.reactionMark);//リアクションマークの取得
         reactionMark.setVisibility(View.GONE);
 
-
+        //インターバル10msec
+        long interval = 10;
         Random randomTimer = new Random(0);//乱数固定(仮)
-        //long randomStartCount = randomTimer.nextInt(10000);
+        //時間作成
+        long visibleReactiomTime = 2000 + randomTimer.nextInt(8000);
+        final CountDown visibleCountDown = new CountDown(visibleReactiomTime,interval);
 
-        //ビックリマーク表示処理
-        while(!stopRun) {
-            long endTime = System.currentTimeMillis();
-            long debugTime = endTime  - startTime;
-            if (debugTime > 4000 + randomTimer.nextInt(8000)) {
+        TextView A_text = (findViewById(R.id.A_text));
+        TextView B_text = (findViewById(R.id.B_text));
 
-                reactionRun = true;
-                stopRun = true;
+
+        Button A_Button = (findViewById(R.id.A_PashButton));
+        Button B_Button = (findViewById(R.id.B_PashButton));
+        Button ready_Button = (findViewById(R.id.readyButton));
+        A_Button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(inGame == true) {
+                    if (reactionRun == true) {
+                        A_text.setText("勝ち！");
+                        B_text.setText("負け！");
+                        inGame = false;
+                        visibleCountDown.cancel();
+                    } else {
+                        A_text.setText("お手付き！負け！");
+                        B_text.setText("勝ち！");
+                        inGame = false;
+                        visibleCountDown.cancel();
+                    }
+                }
             }
+        });
+
+
+        B_Button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(reactionRun == true){
+                    A_text.setText("負け！");
+                    B_text.setText("勝ち！");
+                    inGame = false;
+                    visibleCountDown.cancel();
+                }else{
+                    A_text.setText("勝ち！");
+                    B_text.setText("お手付き！負け！");
+                    inGame = false;
+                    visibleCountDown.cancel();
+                }
+
+            }
+        });
+
+
+        ready_Button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                invisivleReadyButton();
+                visibleCountDown.start();
+            }
+        });
+
+    }
+
+
+    class CountDown extends  CountDownTimer{
+        CountDown(long millInFuture,long countDownInterval){
+            super(millInFuture,countDownInterval);
         }
 
-        //ビックリマーク後の時間カウント
-        while(reactionRun){
-            reactionMark.setVisibility(View.VISIBLE);
-            reactionStartTime = System.currentTimeMillis();
-            long reactionEndTime = System.currentTimeMillis();
-            Button A_Button = (findViewById(R.id.A_PashButton));
-            A_Button.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                }
-            });
-
-
-            Button B_Button = (findViewById(R.id.B_PashButton));
-            A_Button.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                }
-            });
-            reactionRun = false;
-
-
+        @Override
+        public void onTick(long l) {
 
         }
 
+        @Override
+        public void onFinish() {
+            visibleReaction();
+        }
+    }
+
+    //変数宣言
+    boolean stopRun = false;//ビックリマーク表示まで
+    boolean reactionRun = false;//ビックリマーク表示
+    boolean inGame = true;
+
+    long reactionStartTime;
+
+
+
+    private void visibleReaction() {
+        //ビックリマーク表示処理
+        ImageView reactionMark = findViewById(R.id.reactionMark);//リアクションマークの取得
+        reactionMark.setVisibility(View.VISIBLE);
+        reactionRun = true;
+    }
+
+
+    private void invisivleReadyButton(){
+        Button ready_Button = (findViewById(R.id.readyButton));
+        ready_Button.setVisibility(View.GONE);
     }
 }
