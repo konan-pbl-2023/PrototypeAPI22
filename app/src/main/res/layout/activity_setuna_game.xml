@@ -11,7 +11,7 @@
         android:layout_width="831dp"
         android:layout_height="512dp"
         android:rotation="-5"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
