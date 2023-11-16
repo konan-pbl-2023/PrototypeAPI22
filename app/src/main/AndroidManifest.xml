@@ -17,6 +17,7 @@
             android:exported="false" />
         <activity
             android:name=".setuna_game_single"
+            android:screenOrientation="userLandscape"
             android:exported="false" />
         <activity
             android:name=".setuna_result"

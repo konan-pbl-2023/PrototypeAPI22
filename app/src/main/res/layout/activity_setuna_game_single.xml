@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/background" />
 
     <ImageView
-        android:id="@+id/A.oneplayer"
+        android:id="@+id/A_oneplayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
@@ -29,7 +29,7 @@
         tools:srcCompat="@drawable/me" />
 
     <ImageView
-        android:id="@+id/A.outoneplayer"
+        android:id="@+id/A_outoneplayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="84dp"
@@ -62,7 +62,7 @@
         android:id="@+id/A_text"
         android:layout_width="86dp"
         android:layout_height="40dp"
-        android:text="負け！"
+        android:text="あなた"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,7 +75,7 @@
         android:id="@+id/B_text"
         android:layout_width="86dp"
         android:layout_height="40dp"
-        android:text="勝ち！"
+        android:text="あいて"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
