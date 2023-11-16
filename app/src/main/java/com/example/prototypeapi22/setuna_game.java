@@ -29,6 +29,15 @@ public class setuna_game extends AppCompatActivity {
         long visibleReactiomTime = 5000 + randomTimer.nextInt(8000);
         final CountDown visibleCountDown = new CountDown(visibleReactiomTime,interval);
 
+
+        ImageView a_player = findViewById(R.id.A_player);
+        ImageView b_player = findViewById(R.id.B_player);
+        a_player.setImageResource(R.drawable.me);
+        b_player.setImageResource(R.drawable.enemy);
+        a_player.setVisibility(View.VISIBLE);
+        b_player.setVisibility(View.VISIBLE);
+
+
         TextView A_text = (findViewById(R.id.A_text));
         TextView B_text = (findViewById(R.id.B_text));
 
@@ -44,12 +53,14 @@ public class setuna_game extends AppCompatActivity {
                         double reactionTime = a_reactionStartTime - visibleTime;
                         A_text.setText("勝ち！" + reactionTime/1000 + "sec");
                         B_text.setText("負け！");
+                        b_player.setImageResource(R.drawable.enemyout);
                         inGame = false;
                         visibleCountDown.cancel();
                         goHome();
                     } else {
                         a_reactionStartTime = System.currentTimeMillis();
                         A_text.setText("お手付き！負け！");
+                        a_player.setImageResource(R.drawable.meout);
                         B_text.setText("勝ち！");
                         inGame = false;
                         visibleCountDown.cancel();
@@ -67,6 +78,7 @@ public class setuna_game extends AppCompatActivity {
                     double reactionTime = b_reactionStartTime - visibleTime;
                     A_text.setText("負け！");
                     B_text.setText("勝ち！"+ reactionTime/1000 + "sec");
+                    a_player.setImageResource(R.drawable.meout);
                     inGame = false;
                     visibleCountDown.cancel();
                     goHome();
@@ -74,6 +86,7 @@ public class setuna_game extends AppCompatActivity {
                     b_reactionStartTime = System.currentTimeMillis();
                     A_text.setText("勝ち！");
                     B_text.setText("お手付き！負け！");
+                    b_player.setImageResource(R.drawable.enemyout);
                     inGame = false;
                     visibleCountDown.cancel();
                     goHome();
