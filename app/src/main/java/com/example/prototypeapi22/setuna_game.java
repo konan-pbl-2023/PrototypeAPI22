@@ -2,6 +2,7 @@ package com.example.prototypeapi22;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -23,9 +24,9 @@ public class setuna_game extends AppCompatActivity {
 
         //インターバル10msec
         long interval = 10;
-        Random randomTimer = new Random(0);//乱数固定(仮)
+        Random randomTimer = new Random();//乱数
         //時間作成
-        long visibleReactiomTime = 2000 + randomTimer.nextInt(8000);
+        long visibleReactiomTime = 5000 + randomTimer.nextInt(8000);
         final CountDown visibleCountDown = new CountDown(visibleReactiomTime,interval);
 
         TextView A_text = (findViewById(R.id.A_text));
@@ -39,15 +40,20 @@ public class setuna_game extends AppCompatActivity {
             public void onClick(View v) {
                 if(inGame == true) {
                     if (reactionRun == true) {
-                        A_text.setText("勝ち！");
+                        a_reactionStartTime = System.currentTimeMillis();
+                        double reactionTime = a_reactionStartTime - visibleTime;
+                        A_text.setText("勝ち！" + reactionTime/1000 + "sec");
                         B_text.setText("負け！");
                         inGame = false;
                         visibleCountDown.cancel();
+                        goHome();
                     } else {
+                        a_reactionStartTime = System.currentTimeMillis();
                         A_text.setText("お手付き！負け！");
                         B_text.setText("勝ち！");
                         inGame = false;
                         visibleCountDown.cancel();
+                        goHome();
                     }
                 }
             }
@@ -56,16 +62,21 @@ public class setuna_game extends AppCompatActivity {
 
         B_Button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(reactionRun == true){
+                if(inGame == true){
+                    b_reactionStartTime = System.currentTimeMillis();
+                    double reactionTime = b_reactionStartTime - visibleTime;
                     A_text.setText("負け！");
-                    B_text.setText("勝ち！");
+                    B_text.setText("勝ち！"+ reactionTime/1000 + "sec");
                     inGame = false;
                     visibleCountDown.cancel();
+                    goHome();
                 }else{
+                    b_reactionStartTime = System.currentTimeMillis();
                     A_text.setText("勝ち！");
                     B_text.setText("お手付き！負け！");
                     inGame = false;
                     visibleCountDown.cancel();
+                    goHome();
                 }
 
             }
@@ -99,11 +110,12 @@ public class setuna_game extends AppCompatActivity {
     }
 
     //変数宣言
-    boolean stopRun = false;//ビックリマーク表示まで
     boolean reactionRun = false;//ビックリマーク表示
     boolean inGame = true;
+    long a_reactionStartTime;
+    long b_reactionStartTime;
 
-    long reactionStartTime;
+    long visibleTime;
 
 
 
@@ -111,6 +123,7 @@ public class setuna_game extends AppCompatActivity {
         //ビックリマーク表示処理
         ImageView reactionMark = findViewById(R.id.reactionMark);//リアクションマークの取得
         reactionMark.setVisibility(View.VISIBLE);
+        visibleTime = System.currentTimeMillis();
         reactionRun = true;
     }
 
@@ -118,5 +131,19 @@ public class setuna_game extends AppCompatActivity {
     private void invisivleReadyButton(){
         Button ready_Button = (findViewById(R.id.readyButton));
         ready_Button.setVisibility(View.GONE);
+    }
+
+    private void goHome(){
+        Button ready_Button = (findViewById(R.id.readyButton));
+        ready_Button.setVisibility(View.VISIBLE);
+        ready_Button.setText("ホームに戻る");
+        ready_Button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent mainActivity = new Intent(setuna_game.this, MainActivity.class);
+                startActivity(mainActivity);
+            }
+        });
     }
 }
