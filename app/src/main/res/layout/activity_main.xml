@@ -22,43 +22,42 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.15" />
 
-    <Button
+    <ImageButton
         android:id="@+id/SetunaButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="cursive"
-        android:text="刹那の見切り"
-        android:textColor="#00BCD4"
+        android:layout_width="174dp"
+        android:layout_height="142dp"
+        android:tint="#000B0303"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/setuna"
+        tools:ignore="UseAppTint,SpeakableTextPresentCheck" />
 
-    <Button
+    <ImageButton
         android:id="@+id/NumberButton"
-        android:layout_width="146dp"
-        android:layout_height="48dp"
-        android:text="タッチザナンバー"
-        android:textColor="#F44336"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="171dp"
+        android:layout_height="147dp"
+        android:layout_marginTop="472dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.204"
+        app:layout_constraintHorizontal_bias="0.116"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.717" />
+        app:srcCompat="@drawable/number"
+        tools:ignore="SpeakableTextPresentCheck" />
 
-    <Button
+    <ImageButton
         android:id="@+id/SnakeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="スネークゲーム"
-        android:textColor="#4CAF50"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="181dp"
+        android:layout_height="148dp"
+        android:layout_marginTop="472dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.426"
-        app:layout_constraintStart_toEndOf="@+id/NumberButton"
+        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.718" />
+        app:srcCompat="@drawable/snake"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
