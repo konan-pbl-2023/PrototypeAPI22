@@ -14,21 +14,21 @@ public class speed_clear extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speed_clear);
 
-        Button numberButton = findViewById(R.id.speed_return_button);
-        numberButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                Intent numberGame = new Intent(speed_clear.this,MainActivity.class);
-                startActivity(numberGame);
-            }
-        });
-
-        Button numberButton2 = findViewById(R.id.speed_replay_button);
-        numberButton2.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                Intent numberGame2 = new Intent(speed_clear.this,speed_button.class);
-                startActivity(numberGame2);
-            }
-        });
+//        Button numberButton = findViewById(R.id.speed_return_button);
+//        numberButton.setOnClickListener(new View.OnClickListener(){
+//            public void onClick(View v){
+//                Intent numberGame = new Intent(speed_clear.this,MainActivity.class);
+//                startActivity(numberGame);
+//            }
+//        });
+//
+//        Button numberButton2 = findViewById(R.id.speed_replay_button);
+//        numberButton2.setOnClickListener(new View.OnClickListener(){
+//            public void onClick(View v){
+//                Intent numberGame2 = new Intent(speed_clear.this,speed_button.class);
+//                startActivity(numberGame2);
+//            }
+//        });
     }
 
 }
