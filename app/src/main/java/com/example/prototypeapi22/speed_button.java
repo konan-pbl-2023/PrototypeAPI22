@@ -87,7 +87,7 @@ public class speed_button extends AppCompatActivity {
         Button numberButton = (findViewById(R.id.quit));
         numberButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Intent numberGame = new Intent(speed_button.this,quit.class);
+                Intent numberGame = new Intent(speed_button.this,MainActivity.class);
                 startActivity(numberGame);
             }
         });
