@@ -39,11 +39,6 @@ class SnakeGameSurfaceView extends SurfaceView implements SurfaceHolder.Callback
     private Thread thread = null;
     private boolean isAttacked = true;
 
-    private Bitmap snake_head_image = BitmapFactory.decodeResource();
-    private Bitmap snake_body_image = null;
-    private Bitmap snake_tail_image = null;
-    private Bitmap feed_image = null;
-
     private float screenWidth = 0;
     private float screenHeight = 0;
 
@@ -77,7 +72,23 @@ class SnakeGameSurfaceView extends SurfaceView implements SurfaceHolder.Callback
         final float height = getHeight();
         screenWidth = width;
         screenHeight = height;
-        snakeGame = new SnakeGameController(snakeGameRows, (int)CANVAS_WIDTH);
+
+        Bitmap background_image = BitmapFactory.decodeResource(getResources(), R.drawable.snake_back);
+        Bitmap snake_head_image = BitmapFactory.decodeResource(getResources(), R.drawable.snake_head);
+        Bitmap snake_body_image = BitmapFactory.decodeResource(getResources(), R.drawable.snake_body);
+        Bitmap snake_bend_body_image = BitmapFactory.decodeResource(getResources(), R.drawable.snake_bend_body);
+        Bitmap snake_tail_image = BitmapFactory.decodeResource(getResources(), R.drawable.snake_tail);
+        Bitmap feed_image = BitmapFactory.decodeResource(getResources(), R.drawable.snake_feed);
+
+        snakeGame = new SnakeGameController(
+                snakeGameRows, (int)CANVAS_WIDTH,
+                background_image,
+                snake_head_image,
+                snake_body_image,
+                snake_bend_body_image,
+                snake_tail_image,
+                feed_image
+            );
         this.holder = holder;
         thread = new Thread(this);
         thread.start();
@@ -181,17 +192,58 @@ enum SnakeDiretion {
 
 class SnakeGameController {
     // 末尾要素をヘビの顔の座標としたヘビの体がある座標のリスト
-    private final ArrayList<int[]> snakeBody;
+    private final ArrayList<SnakeBody> snakeBody;
     private final int rows;
+    // ヘビの体1マスのサイズ
     private final int size;
     private final int defaultSnakeLen = 3;
+    private final int defaultSnakeDirection = SnakeDiretion.Right;
 
-    public SnakeGameController(int rows, int screenWidth) {
+    private final Bitmap background_image;
+    private final Bitmap snake_head_image;
+    private final Bitmap snake_body_image;
+    private final Bitmap snake_bend_body_image;
+    private final Bitmap snake_tail_image;
+    private final Bitmap feed_image;
+
+    private final Matrix m_up = new Matrix();
+    private final Matrix m_right = new Matrix();
+    private final Matrix m_down = new Matrix();
+    private final Matrix m_left = new Matrix();
+
+    public SnakeGameController(
+            int rows, int screenWidth,
+            Bitmap background_image,
+            Bitmap snake_head_image,
+            Bitmap snake_body_image,
+            Bitmap snake_bend_body_image,
+            Bitmap snake_tail_image,
+            Bitmap feed_image
+    ) {
         this.rows = rows;
         this.size = screenWidth/rows;
-        snakeBody = new ArrayList<int[]>();
+
+        this.background_image =
+            Bitmap.createScaledBitmap(background_image, size, size, true);
+        this.snake_head_image =
+            Bitmap.createScaledBitmap(snake_head_image, size, size, true);
+        this.snake_body_image =
+            Bitmap.createScaledBitmap(snake_body_image, size, size, true);
+        this.snake_bend_body_image =
+            Bitmap.createScaledBitmap(snake_bend_body_image, size, size, true);
+        this.snake_tail_image =
+            Bitmap.createScaledBitmap(snake_tail_image, size, size, true);
+        this.feed_image =
+            Bitmap.createScaledBitmap(feed_image, size, size, true);
+
+        m_up.setRotate(0 size/2, size/2);
+        m_right.setRotate(90 size/2, size/2);
+        m_down.setRotate(180 size/2, size/2);
+        m_left.setRotate(270, size/2, size/2);
+
+        snakeBody = new ArrayList<SnakeBody>();
         for (int i = 0; i <= defaultSnakeLen; i++) {
-            snakeBody.add(new int[]{ i, rows/2 });
+            snakeBody.add(new Snakebody(i, rows/2 , defaultSnakeDirection));
         }
     }
 
@@ -206,33 +258,33 @@ class SnakeGameController {
                 if (now_head_y <= 0) {
                     return false;
                 }
-                new_head = new int[]{ now_head_x, now_head_y - 1 };
+                new_head = new SnakeBody(now_head_x, now_head_y - 1, d);
                 break;
 
             case Down:
                 if (now_head_y >= rows) {
                     return false;
                 }
-                new_head = new int[]{ now_head_x, now_head_y + 1 };
+                new_head = new SnakeBody(now_head_x, now_head_y + 1, d);
                 break;
 
             case Left:
                 if (now_head_x <= 0) {
                     return false;
                 }
-                new_head = new int[]{ now_head_x - 1, now_head_y };
+                new_head = new SnakeBody(now_head_x - 1, now_head_y, d);
                 break;
 
             case Right:
                 if (now_head_x >= rows) {
                     return false;
                 }
-                new_head = new int[]{ now_head_x + 1, now_head_y };
+                new_head = new SnakeBody(now_head_x + 1, now_head_y, d);
                 break;
         }
 
-        for (final int[] v : snakeBody) {
-            if (Arrays.equals(v, new_head)) {
+        for (final SnakeBody v : snakeBody) {
+            if (v.is_clashing(new_head)) {
                 return false;
             }
         }
@@ -243,20 +295,99 @@ class SnakeGameController {
         return true;
     }
 
-    public void draw_snake(Canvas canvas, Paint paint) {
-        Rect rect = new Rect();
+    public void draw_snake(Canvas canvas) {
+        Paint paint = new Paint();
         int i = 0;
-        for (int[] v : snakeBody) {
-            rect.set(v[0]*size, v[1]*size, v[0]*size+size, v[1]*size+size);
-            if (i == snakeBody.size()-1) {
-                paint.setColor(Color.GREEN);
-            } else {
-                paint.setColor(Color.RED);
+        for (SnakeBody v : snakeBody) {
+            Bitmap b;
+            Matrix m = (
+                    v.d == SnakeDiretion.Up
+                    ? m_up
+                    : v.d == SnakeDiretion.Right
+                    ? m_right
+                    : v.d == SnakeDiretion.Down
+                    ? m_down
+                    // default:
+                    : m_left
+                );
+            if (i == snakeBody.size()-1) { // 頭
+                b = snake_head_image;
+            } else if (i == 0) { // しっぽ
+                b = snake_tail;
+            } else { // 胴体
+                if (v.d == snakeBody.get(i-1).d) {
+                    b = snake_body;
+                } else {
+                    b = snake_bend_body;
+                    lstD = snakeBody.get(i-1).d;
+                    // NOTE: snake_bend_body は、
+                    //    up: ┗
+                    // right: ┏
+                    //  down: ┓
+                    //  left: ┛
+                    switch (lstD) {
+                        case SnakeDiretion.Up:
+                            switch (v.d) {
+                                case SnakeDiretion.Right:
+                                    m = m_right;
+                                    break;
+                                default:
+                                    m = m_down;
+                            }
+                            break;
+                        case SnakeDiretion.Down:
+                            switch (v.d) {
+                                case SnakeDiretion.Right:
+                                    m = m_up;
+                                    break;
+                                default:
+                                    m = m_left;
+                            }
+                            break;
+                        case SnakeDiretion.Right:
+                            switch (v.d) {
+                                case SnakeDiretion.Up:
+                                    m = m_left;
+                                    break;
+                                default:
+                                    m = m_down;
+                            }
+                            break;
+                        default: // Left
+                            switch (v.d) {
+                                case SnakeDiretion.Up:
+                                    m = m_up;
+                                    break;
+                                default:
+                                    m = m_right;
+                            }
+                            break;
+                    }
+                }
             }
-            canvas.drawRect(rect, paint);
+
+            b = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), m, true);
+
+            canvas.drawBitmap(b, v.x*size, v.y*size, paint);
 
             i++;
         }
+    }
+}
+
+class SnakeBody {
+    public int x;
+    public int y;
+    public SnakeDiretion d;
+
+    public SnakeBody(int x, int y, SnakeDiretion d) {
+        this.x = x;
+        this.y = y;
+        this.d = d;
+    }
+
+    public boolean is_clashing(SnakeBody other) {
+        return other.x == this.x && other.y == this.y;
     }
 }
 
