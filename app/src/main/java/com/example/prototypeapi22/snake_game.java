@@ -39,6 +39,11 @@ class SnakeGameSurfaceView extends SurfaceView implements SurfaceHolder.Callback
     private Thread thread = null;
     private boolean isAttacked = true;
 
+    private Bitmap snake_head_image = BitmapFactory.decodeResource();
+    private Bitmap snake_body_image = null;
+    private Bitmap snake_tail_image = null;
+    private Bitmap feed_image = null;
+
     private float screenWidth = 0;
     private float screenHeight = 0;
 
@@ -254,3 +259,4 @@ class SnakeGameController {
         }
     }
 }
+
