@@ -106,13 +106,10 @@ class SnakeGameSurfaceView extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private void main_loop(Canvas canvas, boolean is_moving) {
-        canvas.drawColor(Color.YELLOW);
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.BLACK);
-        canvas.drawRect(new RectF(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT), paint);
-        paint.setStyle(Paint.Style.FILL);
-        snakeGame.draw_snake(canvas, paint);
+        canvas.drawColor(Color.BLACK);
+        canvas.drawBitmap(background_image, 0, 0, new Paint());
+        // canvas.drawRect(new RectF(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT), paint);
+        snakeGame.draw_snake(canvas);
 
         if (is_moving && ! snakeGame.move_snake(snakeDirection)) {
             isAttacked = false;
@@ -236,9 +233,9 @@ class SnakeGameController {
         this.feed_image =
             Bitmap.createScaledBitmap(feed_image, size, size, true);
 
-        m_up.setRotate(0 size/2, size/2);
-        m_right.setRotate(90 size/2, size/2);
-        m_down.setRotate(180 size/2, size/2);
+        m_up.setRotate(0, size/2, size/2);
+        m_right.setRotate(90, size/2, size/2);
+        m_down.setRotate(180, size/2, size/2);
         m_left.setRotate(270, size/2, size/2);
 
         snakeBody = new ArrayList<SnakeBody>();
