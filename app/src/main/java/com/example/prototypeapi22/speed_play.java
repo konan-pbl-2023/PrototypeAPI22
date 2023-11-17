@@ -18,32 +18,32 @@ public class speed_play extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         int array[]=new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
-        Random random = new Random();
-        int index, index2, temp;
-        for (int i = array.length - 1; i > 0; i--)
-        {
-            index = random.nextInt(16);
-            temp = array[index];
-            array[index] = array[i];
-            array[i] = temp;
-            //Log.v(array[i]);
-        }
-        for(int i=0;i<16;i++){
-        System.out.println(array[i]);
-        }
-
-        int ans_correct[]=new int[16];
-        for(int i=1;i<17;i++){
-            for(int j=0;j<16;j++){
-                if(array[j]==i){
-                    ans_correct[i]=j;
-                    break;
-                }
-            }
-        }
-        for(int i=0;i<16;i++){
-            System.out.println(ans_correct[i]);
-        }
+//        Random random = new Random();
+//        int index, index2, temp;
+//        for (int i = array.length - 1; i > 0; i--)
+//        {
+//            index = random.nextInt(16);
+//            temp = array[index];
+//            array[index] = array[i];
+//            array[i] = temp;
+//            //Log.v(array[i]);
+//        }
+//        for(int i=0;i<16;i++){
+//        System.out.println(array[i]);
+//        }
+//
+//        int ans_correct[]=new int[16];
+//        for(int i=1;i<17;i++){
+//            for(int j=0;j<16;j++){
+//                if(array[j]==i){
+//                    ans_correct[i]=j;
+//                    break;
+//                }
+//            }
+//        }
+//        for(int i=0;i<16;i++){
+//            System.out.println(ans_correct[i]);
+//        }
 
 //        setContentView(R.layout.activity_speed_play);
 //        Button n_1 = (findViewById(R.id.num_1));
