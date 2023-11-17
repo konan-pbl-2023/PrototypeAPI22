@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         ImageButton snakeButton = (findViewById(R.id.SnakeButton));
         snakeButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Intent snakeGame = new Intent(MainActivity.this,snake_game.class);
+                Intent snakeGame = new Intent(MainActivity.this,snake_title.class);
                 startActivity(snakeGame);
             }
         });
