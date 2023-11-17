@@ -18,7 +18,7 @@ public class speed_clear extends AppCompatActivity {
     Button numberButton = (findViewById(R.id.speed_return_button));
         numberButton.setOnClickListener(new View.OnClickListener(){
         public void onClick(View v){
-            Intent numberGame = new Intent(speed_clear.this,speed_return_button.class);
+            Intent numberGame = new Intent(speed_clear.this,MainActivity.class);
             startActivity(numberGame);
         }
     });
@@ -26,7 +26,7 @@ public class speed_clear extends AppCompatActivity {
     Button numberButton2 = (findViewById(R.id.speed_replay_button));
         numberButton.setOnClickListener(new View.OnClickListener(){
         public void onClick(View v){
-            Intent numberGame2 = new Intent(speed_clear.this,speed_replay_button.class);
+            Intent numberGame2 = new Intent(speed_clear.this,speed_button.class);
             startActivity(numberGame2);
         }
     });
