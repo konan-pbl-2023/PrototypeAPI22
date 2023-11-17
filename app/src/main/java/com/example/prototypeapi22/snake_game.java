@@ -1,8 +1,11 @@
 package com.example.prototypeapi22;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -39,6 +42,8 @@ class SnakeGameSurfaceView extends SurfaceView implements SurfaceHolder.Callback
     private Thread thread = null;
     private boolean isAttacked = true;
 
+    private Bitmap background_image = BitmapFactory.decodeResource(getResources(), R.drawable.snake_back);
+
     private float screenWidth = 0;
     private float screenHeight = 0;
 
@@ -73,7 +78,6 @@ class SnakeGameSurfaceView extends SurfaceView implements SurfaceHolder.Callback
         screenWidth = width;
         screenHeight = height;
 
-        Bitmap background_image = BitmapFactory.decodeResource(getResources(), R.drawable.snake_back);
         Bitmap snake_head_image = BitmapFactory.decodeResource(getResources(), R.drawable.snake_head);
         Bitmap snake_body_image = BitmapFactory.decodeResource(getResources(), R.drawable.snake_body);
         Bitmap snake_bend_body_image = BitmapFactory.decodeResource(getResources(), R.drawable.snake_bend_body);
@@ -194,7 +198,7 @@ class SnakeGameController {
     // ヘビの体1マスのサイズ
     private final int size;
     private final int defaultSnakeLen = 3;
-    private final int defaultSnakeDirection = SnakeDiretion.Right;
+    private final SnakeDiretion defaultSnakeDirection = SnakeDiretion.Right;
 
     private final Bitmap background_image;
     private final Bitmap snake_head_image;
@@ -240,16 +244,16 @@ class SnakeGameController {
 
         snakeBody = new ArrayList<SnakeBody>();
         for (int i = 0; i <= defaultSnakeLen; i++) {
-            snakeBody.add(new Snakebody(i, rows/2 , defaultSnakeDirection));
+            snakeBody.add(new SnakeBody(i, rows/2 , defaultSnakeDirection));
         }
     }
 
     // ヘビを指定方向に動かす。壁や自分に衝突したときはfalseが返される。
     public boolean move_snake(SnakeDiretion d) {
-        int[] new_head = null;
-        int[] now_head = snakeBody.get(snakeBody.size()-1);
-        int now_head_x = now_head[0];
-        int now_head_y = now_head[1];
+        SnakeBody new_head = null;
+        SnakeBody now_head = snakeBody.get(snakeBody.size()-1);
+        int now_head_x = now_head.x;
+        int now_head_y = now_head.y;
         switch (d) {
             case Up:
                 if (now_head_y <= 0) {
@@ -310,40 +314,40 @@ class SnakeGameController {
             if (i == snakeBody.size()-1) { // 頭
                 b = snake_head_image;
             } else if (i == 0) { // しっぽ
-                b = snake_tail;
+                b = snake_tail_image;
             } else { // 胴体
                 if (v.d == snakeBody.get(i-1).d) {
-                    b = snake_body;
+                    b = snake_body_image;
                 } else {
-                    b = snake_bend_body;
-                    lstD = snakeBody.get(i-1).d;
+                    b = snake_bend_body_image;
+                    SnakeDiretion lstD = snakeBody.get(i-1).d;
                     // NOTE: snake_bend_body は、
                     //    up: ┗
                     // right: ┏
                     //  down: ┓
                     //  left: ┛
                     switch (lstD) {
-                        case SnakeDiretion.Up:
+                        case Up:
                             switch (v.d) {
-                                case SnakeDiretion.Right:
+                                case Right:
                                     m = m_right;
                                     break;
                                 default:
                                     m = m_down;
                             }
                             break;
-                        case SnakeDiretion.Down:
+                        case Down:
                             switch (v.d) {
-                                case SnakeDiretion.Right:
+                                case Right:
                                     m = m_up;
                                     break;
                                 default:
                                     m = m_left;
                             }
                             break;
-                        case SnakeDiretion.Right:
+                        case Right:
                             switch (v.d) {
-                                case SnakeDiretion.Up:
+                                case Up:
                                     m = m_left;
                                     break;
                                 default:
@@ -352,7 +356,7 @@ class SnakeGameController {
                             break;
                         default: // Left
                             switch (v.d) {
-                                case SnakeDiretion.Up:
+                                case Up:
                                     m = m_up;
                                     break;
                                 default:
